@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Arrest Warrant — Afara Ewa mii</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f5f0e8;
+      min-height: 100vh;
+      padding: 1rem 0.75rem 2rem;
+      font-family: 'Inter', Courier, monospace;
+      color: #1a1a1a;
+    }
+
+    .spotify-top {
+      max-width: 600px;
+      margin: 0 auto 0.5rem;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .music-nudge {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: #888;
+      padding: 0.6rem 1rem;
+      border: 1px dashed #bbb;
+      background: #fffef9;
+      margin: 0 auto 1rem;
+      max-width: 600px;
+    }
+
+    .page { max-width: 600px; margin: 0 auto; }
+
+    .warrant {
+      background: #fffef9;
+      border: 3px double #1a1a1a;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .guilty-stamp {
+      display: block;
+      text-align: center;
+      border: 4px solid #8b1a1a;
+      color: #8b1a1a;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 8px;
+      padding: 0.3rem 1rem;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: rotate(-4deg) scale(0.6);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+      margin: 0 auto 1rem;
+      width: fit-content;
+    }
+
+    .guilty-stamp.show {
+      opacity: 0.85;
+      transform: rotate(-4deg) scale(1);
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .header .agency {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #666;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .header .title {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .header .case-no {
+      font-size: 10px;
+      color: #666;
+      margin-top: 5px;
+      letter-spacing: 1px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .meta-item .label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #888;
+      text-transform: uppercase;
+    }
+
+    .meta-item .value {
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+
+    .meta-item .value.guilty { color: #8b1a1a; }
+
+    .charges {
+      border: 1px solid #999;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .charges-title {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+    }
+
+    .charge {
+      margin-bottom: 0.75rem;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .charge:last-child { margin-bottom: 0; }
+    .charge .count { color: #8b1a1a; font-weight: bold; }
+
+    .evidence {
+      border: 1px dashed #aaa;
+      padding: 0.85rem;
+      margin-bottom: 1.25rem;
+      background: #faf9f4;
+    }
+
+    .evidence-title {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .photo-slot {
+      height: 90px;
+      border: 1px dashed #bbb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #aaa;
+      text-align: center;
+      padding: 4px;
+      overflow: hidden;
+    }
+
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+
+    .verdict {
+      border-top: 2px solid #1a1a1a;
+      padding-top: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .verdict-title {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .verdict-text { font-size: 13px; line-height: 1.8; }
+
+    .signatures {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .sig-block { border-top: 1px solid #1a1a1a; padding-top: 7px; }
+
+    .sig-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #888;
+      text-transform: uppercase;
+    }
+
+    .sig-name { font-size: 14px; font-weight: bold; margin-top: 4px; }
+
+    .sig-sub { font-size: 10px; color: #888; margin-top: 2px; line-height: 1.4; }
+
+    .footer-stamp {
+      text-align: center;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #bbb;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #888;
+      text-transform: uppercase;
+    }
+
+    .certificate {
+      background: #fffef9;
+      border: 1px solid #ccc;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .cert-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .cert-name { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
+    .cert-text { font-size: 13px; color: #444; line-height: 1.8; }
+
+    .cert-date {
+      margin-top: 0.85rem;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #aaa;
+      text-transform: uppercase;
+    }
+
+    .heart-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    @media (min-width: 600px) {
+      body { padding: 2rem 1rem 2rem; }
+      .warrant { padding: 2rem; }
+      .header .agency { font-size: 11px; }
+      .header .title { font-size: 26px; }
+      .charge { font-size: 13px; }
+      .verdict-text { font-size: 14px; }
+      .guilty-stamp { font-size: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="spotify-top">
+    <iframe
+      src="https://open.spotify.com/embed/track/5qDJnpI14GE3LywpJ25UIn?utm_source=generator&theme=0"
+      allowfullscreen=""
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+      style="display:block; width:100%; height:80px; border:none;">
+    </iframe>
+  </div>
+
+  <div class="music-nudge">
+    &#9834; &nbsp; Press play above, then scroll down &nbsp; &#9834;
+  </div>
+
+  <div class="page">
+
+    <div class="warrant" id="warrant">
+
+      <div class="guilty-stamp" id="stamp">GUILTY</div>
+
+      <div class="header">
+        <div class="agency">Republic of the Heart — Bureau of Emotional Affairs</div>
+        <div class="title">Arrest Warrant</div>
+        <div class="case-no">Case No. 08-10-2025 &nbsp;/&nbsp; Class: Irresistible</div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="label">Subject</div>
+          <div class="value">Afara Ewa mii</div>
+        </div>
+        <div class="meta-item">
+          <div class="label">Date of Incident</div>
+          <div class="value">August 10, 2025</div>
+        </div>
+        <div class="meta-item">
+          <div class="label">First Physical Sighting</div>
+          <div class="value">August 15, 2025</div>
+        </div>
+        <div class="meta-item">
+          <div class="label">Status</div>
+          <div class="value guilty">Deeply Guilty</div>
+        </div>
+      </div>
+
+      <div class="charges">
+        <div class="charges-title">Charges Filed</div>
+
+        <div class="charge">
+          <span class="count">Count 1 —</span>
+          Initiating first contact on <strong>August 10, 2025</strong> and immediately creating an uncontrollable urge to keep talking.
+        </div>
+
+        <div class="charge">
+          <span class="count">Count 2 —</span>
+          Appearing in person on <strong>August 15, 2025</strong> without prior warning, causing irreversible damage to subject's sense of independence.
+        </div>
+
+        <div class="charge">
+          <span class="count">Count 3 —</span>
+          Being <em>effortlessly beautiful</em> — a sustained, ongoing offence with no sign of stopping and no regard for the consequences.
+        </div>
+
+        <div class="charge">
+          <span class="count">Count 4 —</span>
+          Making the arresting officer fall in love immediately upon first sighting, with no consent sought and no antidote available.
+        </div>
+
+        <div class="charge">
+          <span class="count">Count 5 —</span>
+          Conducting all of the above simultaneously and without effort, in clear violation of Section 4(a) of the Heart Protection Act.
+        </div>
+
+        <!-- ADD MORE CHARGES HERE — copy a charge block above and personalise it -->
+
+      </div>
+
+      <div class="evidence">
+        <div class="evidence-title">Photo Evidence</div>
+        <div class="photo-grid">
+          <div class="photo-slot">
+            <img src="img/afara mii 1.jpeg" alt="Afara Ewa mii 1">
+          </div>
+          <div class="photo-slot">
+           <img src="img/afar mii 2.jpeg" alt="Afara Ewa mii 2">
+          </div>
+          <div class="photo-slot">
+            <img src="img/afara mii 3.jpeg" alt="Afara Ewa mii 3">
+          </div>
+        </div>
+      </div>
+
+      
+
+      <div class="verdict">
+        <div class="verdict-title">Verdict</div>
+        <div class="verdict-text">
+          Having reviewed all evidence, this bureau finds the subject <strong>unconditionally guilty</strong>
+          of stealing a heart, disrupting all rational thought, and making the world considerably harder
+          to navigate alone. The penalty, as prescribed by law, is to be loved — fully, completely, and
+          without conditions — for as long as this officer lives.
+        </div>
+      </div>
+
+      <div class="signatures">
+        <div class="sig-block">
+          <div class="sig-label">Arresting Officer</div>
+          <div style="margin-top: 6px;">
+            <svg width="80" height="48" viewBox="0 0 80 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- upper lip -->
+              <path d="M12 22 C16 14, 24 12, 30 18 C33 14, 38 11, 44 13 C52 15, 58 20, 62 24 C56 20, 50 18, 44 20 C40 16, 36 16, 32 20 C28 17, 20 18, 12 22 Z" fill="#c0392b" opacity="0.88"/>
+              <!-- lower lip -->
+              <path d="M12 24 C18 32, 28 38, 37 36 C46 38, 56 32, 62 24 C56 30, 48 33, 40 32 C32 33, 22 30, 12 24 Z" fill="#c0392b" opacity="0.88"/>
+              <!-- cupid's bow highlight -->
+              <path d="M30 18 C33 15, 36 15, 40 17 C38 14, 34 13, 30 18 Z" fill="#e74c3c" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="sig-sub" style="margin-top: 2px;">Badge No. 08152025</div>
+        </div>
+        <div class="sig-block">
+          <div class="sig-label">Date Issued</div>
+          <div class="sig-name">April 1, 2026</div>
+          <div class="sig-sub">April Fools' Day — but this is not a joke.</div>
+        </div>
+      </div>
+
+      <div class="footer-stamp">This warrant has no expiry date</div>
+
+    </div>
+
+    <div class="certificate" id="certificate">
+      <div class="cert-label">Certificate of Love — Official Copy</div>
+      <div class="cert-name">Afara Ewa mii</div>
+      <div class="cert-text">
+        is hereby certified as the <em>most wanted person</em> in the life of Olufunmi —<br>
+        guilty of being loved, and sentenced to forever.
+      </div>
+      <div class="cert-date">Issued: April 1, 2026 — Bureau of Emotional Affairs</div>
+    </div>
+
+  </div>
+
+  <canvas class="heart-canvas" id="heartCanvas"></canvas>
+
+  <script>
+    // GUILTY stamp — triggers when warrant scrolls into view halfway
+    const stamp = document.getElementById('stamp');
+    const warrant = document.getElementById('warrant');
+    let stampShown = false;
+
+    // Heart confetti
+    const canvas = document.getElementById('heartCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    let hearts = [];
+    let heartsActive = false;
+    let certTriggered = false;
+
+    function spawnHearts() {
+      heartsActive = true;
+      for (let i = 0; i < 60; i++) {
+        hearts.push({
+          x: Math.random() * canvas.width,
+          y: canvas.height + Math.random() * 100,
+          size: 10 + Math.random() * 22,
+          speedY: -(2 + Math.random() * 4),
+          speedX: (Math.random() - 0.5) * 2,
+          opacity: 0.7 + Math.random() * 0.3,
+          wobble: Math.random() * Math.PI * 2,
+          wobbleSpeed: 0.04 + Math.random() * 0.04,
+          color: Math.random() > 0.5 ? '#e05a7a' : '#c0392b'
+        });
+      }
+    }
+
+    function drawHeart(x, y, size, color, opacity) {
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(x, y - size * 0.3, x - size * 0.5, y - size * 0.6, x - size * 0.5, y - size * 0.25);
+      ctx.bezierCurveTo(x - size * 0.5, y - size * 0.65, x, y - size * 0.55, x, y - size * 0.25);
+      ctx.bezierCurveTo(x, y - size * 0.55, x + size * 0.5, y - size * 0.65, x + size * 0.5, y - size * 0.25);
+      ctx.bezierCurveTo(x + size * 0.5, y - size * 0.6, x, y - size * 0.3, x, y);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animateHearts() {
+      if (!heartsActive) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hearts = hearts.filter(h => h.opacity > 0.05);
+      hearts.forEach(h => {
+        h.wobble += h.wobbleSpeed;
+        h.x += h.speedX + Math.sin(h.wobble) * 0.8;
+        h.y += h.speedY;
+        h.opacity -= 0.008;
+        drawHeart(h.x, h.y, h.size, h.color, Math.max(0, h.opacity));
+      });
+      if (hearts.length > 0) {
+        requestAnimationFrame(animateHearts);
+      } else {
+        heartsActive = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    // Scroll observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.target === warrant && !stampShown && entry.intersectionRatio > 0.4) {
+          setTimeout(() => {
+            stamp.classList.add('show');
+            stampShown = true;
+          }, 600);
+        }
+        if (entry.target === document.getElementById('certificate') && !certTriggered && entry.intersectionRatio > 0.3) {
+          certTriggered = true;
+          spawnHearts();
+          animateHearts();
+        }
+      });
+    }, { threshold: [0.3, 0.4, 0.5] });
+
+    observer.observe(warrant);
+    observer.observe(document.getElementById('certificate'));
+  </script>
+
+</body>
+</html>
